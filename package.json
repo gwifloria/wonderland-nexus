@@ -1,0 +1,26 @@
+{
+  "name": "wonderland-nexus",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "yarn@4.2.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "sync-mail": "yarn workspace @wonderland/api sync:mail",
+    "sync-mail:flagged": "yarn workspace @wonderland/api sync:mail:flagged",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+@keyframes navbarDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-navbarDrop {
+  animation: navbarDrop 0.7s cubic-bezier(0.4, 1.6, 0.6, 1);
+}

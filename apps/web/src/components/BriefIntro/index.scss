@@ -1,0 +1,82 @@
+.brief-intro {
+  > div {
+    position: relative;
+    display: block;
+    $cubic-bezier: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 700;
+    border: 0;
+    position: relative;
+    letter-spacing: 0.15em;
+    margin: 0 auto;
+    padding: 1rem 0rem;
+    background: transparent;
+    outline: none;
+    z-index: 3;
+    position: relative;
+    transition: all 0.5s $cubic-bezier 0.15s;
+    &::after,
+    &::before {
+      border: 0;
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      transition: all 0.5s $cubic-bezier;
+      border-radius: 50%;
+    }
+    // &::before {
+    //   border: 0;
+    //   top: -0.75rem;
+    //   left: -1.5rem;
+    //   background-color: #ea9daa;
+    //   animation: topAnimation 2s $cubic-bezier 0.25s infinite alternate;
+    // }
+    // &::after {
+    //   background-color: #91aeba;
+    //   top: 3rem;
+    //   left: 13rem;
+    //   animation: bottomAnimation 2s $cubic-bezier 0.5s infinite alternate;
+    // }
+    // &:hover {
+    //   position: relative;
+    //   color: white;
+    //   z-index: 3;
+    //   padding: 1rem 1.5rem;
+    //   &::before,
+    //   &::after {
+    //     top: 0;
+    //     z-index: -2;
+    //     height: 100%;
+    //     width: 100%;
+    //     border-radius: 0;
+    //     animation: none;
+    //   }
+    //   &::after {
+    //     left: 0rem;
+    //   }
+    //   &::before {
+    //     top: 0.5rem;
+    //     left: 0.35rem;
+    //   }
+    // }
+  }
+
+  @keyframes topAnimation {
+    from {
+      transform: translate(0rem, 0);
+    }
+    to {
+      transform: translate(0rem, 3.5rem);
+    }
+  }
+  @keyframes bottomAnimation {
+    from {
+      transform: translate(-11.5rem, 0);
+    }
+    to {
+      transform: translate(0rem, 0);
+    }
+  }
+}

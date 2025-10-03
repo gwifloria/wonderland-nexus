@@ -1,0 +1,34 @@
+{
+  "name": "@wonderland/api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "build": "echo 'No build step required for Express app'",
+    "clean": "echo 'No clean step required'",
+    "sync:mail": "dotenv -- node scripts/sync-mail.js",
+    "sync:mail:flagged": "dotenv -e .env.local -- node -e \"process.env.FILTER_FLAGGED='true'; require('./scripts/sync-mail.js')\"",
+    "sync:mail:contact": "dotenv -e .env.local -- node scripts/sync-mail.js"
+  },
+  "dependencies": {
+    "@wonderland/database": "workspace:*",
+    "@wonderland/mail-sync": "workspace:*",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^17.2.2",
+    "dotenv-cli": "^7.3.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.0.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "lodash": "^4.17.21",
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5.3.3"
+  }
+}

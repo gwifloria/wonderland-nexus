@@ -1,0 +1,24 @@
+{
+  "name": "@wonderland/mail-sync",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@azure/msal-node": "^3.7.3",
+    "@wonderland/database": "workspace:*",
+    "cloudinary": "^2.7.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/node-fetch": "^2",
+    "typescript": "^5.3.3"
+  }
+}

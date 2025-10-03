@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# run lint-staged and fail commit if any task fails
+echo "🔧 Running lint-staged..."
+yarn lint-staged || {
+  echo "❌ lint-staged failed — aborting commit."
+  exit 1
+}
+echo "🔍 Running ts check before push..."
+yarn typecheck

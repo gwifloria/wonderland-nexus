@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '📦 [PreCompact] 即将压缩上下文 - $(date \"+%H:%M:%S\")'"
+          }
+        ]
+      }
+    ]
+  }
+}

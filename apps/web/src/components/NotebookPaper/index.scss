@@ -1,0 +1,70 @@
+/* 手帐风活页：柔和装订条 + 大孔、稀疏一些 */
+.notebook-paper {
+  position: relative;
+  background: #fafaf7; /* 纸张底色 */
+  border-radius: 14px;
+  overflow: visible; /* 让左侧装订条不被裁剪 */
+}
+
+/* 左侧装订条（浅色带，提升质感） */
+.notebook-paper::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  bottom: 0px;
+  left: 0px; /* 装订条伸出一点更像活页 */
+  width: 24px; /* 装订条宽度 */
+  background: #b9c2b9; /* 装订条颜色：浅灰绿，更温柔 */
+  border-radius: 10px;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.04);
+}
+
+/* 打孔（更大、更稀疏，并带轻微立体感） */
+.notebook-paper::after {
+  content: "";
+  position: absolute;
+  top: 22px; /* 与上边缘保持留白 */
+  bottom: 22px;
+  left: 2px; /* 居中落在装订条上 */
+  width: 14px; /* 打孔容器宽度 */
+
+  /* 两层径向渐变叠加：一层阴影、一层高光，形成立体“孔” */
+  background:
+    radial-gradient(
+        circle at 60% 6px,
+        rgba(0, 0, 0, 0.1) 0 6px,
+        transparent 6px
+      )
+      repeat-y,
+    radial-gradient(
+        circle at 40% 6px,
+        rgba(255, 255, 255, 0.85) 0 6px,
+        transparent 6px
+      )
+      repeat-y;
+
+  /* 间距：每 44px 一个孔；想更稀疏可调大、想更密可调小 */
+  background-size: 16px 50px;
+  background-position:
+    0 0,
+    0 0;
+  pointer-events: none;
+}
+/* 默认（移动） */
+.notebook-paper::after {
+  background-size: 16px 46px; /* 直径≈12px，间距46px */
+}
+
+/* >=768px */
+@media (min-width: 768px) {
+  .notebook-paper::after {
+    background-size: 16px 52px;
+  }
+}
+
+/* >=1024px */
+@media (min-width: 1024px) {
+  .notebook-paper::after {
+    background-size: 16px 58px;
+  }
+}

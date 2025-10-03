@@ -1,0 +1,119 @@
+/* End of file */
+
+/* globals.css file appended with: */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm; /* safe printable area */
+  }
+
+  /* Hide navigation header completely when printing */
+  nav[role="navigation"] {
+    display: none !important;
+  }
+  .fixed.top-0 {
+    display: none !important;
+  }
+
+  /* Remove height and overflow constraints for full content printing */
+  .main-background {
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+  .h-full.overflow-auto {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Remove noisy backgrounds & shadows for clean PDF */
+  html,
+  body {
+    background: #fff !important;
+  }
+  .about-page .container {
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+  .about-page [class*="shadow"],
+  .about-page [class*="shadow-"] {
+    box-shadow: none !important;
+  }
+  .about-page [style*="background-image"] {
+    background-image: none !important;
+  }
+
+  /* Hide decorative stickers, segmented switch, and any print:hidden utility */
+  img[src*="/images/"] {
+    display: none !important;
+  }
+  .ant-segmented {
+    display: none !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Hide hero section decorations */
+  .pointer-events-none.absolute.-top-6 {
+    display: none !important;
+  }
+
+  /* Hide tape decorations on cards */
+  .pointer-events-none.absolute.-top-3 {
+    display: none !important;
+  }
+
+  /* Hide all decorative images */
+  img[alt="bow"],
+  img[alt="tape"] {
+    display: none !important;
+  }
+
+  /* Improve text contrast for print */
+  .prose,
+  .about-page {
+    color: #111 !important;
+  }
+  .text-neutral-700,
+  .text-neutral-700\/90,
+  .text-neutral-600 {
+    color: #111 !important;
+  }
+
+  /* Avoid page breaks inside cards */
+  .about-page .rounded-3xl {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Personal header styling for print */
+  .print\:block {
+    display: block !important;
+  }
+  .print\:mb-8 {
+    margin-bottom: 2rem !important;
+  }
+
+  /* Clean layout after hero section removal */
+  .about-page main {
+    padding-top: 0 !important;
+  }
+
+  /* Ensure proper spacing for personal header */
+  .hidden.print\:block h1 {
+    color: #111 !important;
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Personal info text styling */
+  .hidden.print\:block p {
+    color: #666 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
+    margin: 0.25rem 0 !important;
+  }
+}
