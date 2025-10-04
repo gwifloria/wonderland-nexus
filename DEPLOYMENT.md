@@ -19,12 +19,12 @@
 
 | 设置项 | 值 |
 |--------|-----|
-| **Install Command** | `corepack enable && corepack prepare yarn@4.2.2 --activate && yarn install` |
-| **Build Command** | `cd ../.. && corepack enable && corepack prepare yarn@4.2.2 --activate && yarn install && yarn turbo run build --filter=@wonderland/web` |
+| **Install Command** | `yarn install` |
+| **Build Command** | `cd ../.. && yarn turbo run build --filter=@wonderland/web` |
 | **Output Directory** | `.next` (默认) |
 | **Development Command** | `yarn dev` |
 
-> **重要**: 必须使用 corepack 启用 Yarn 4，因为 Vercel 默认使用 Yarn 1，不支持 `workspace:*` 协议。
+> **重要**: 必须在环境变量中设置 `ENABLE_EXPERIMENTAL_COREPACK=1`，Vercel 会自动根据 `package.json` 中的 `packageManager` 字段使用 Yarn 4。
 
 #### 2. 环境变量配置
 
@@ -32,7 +32,11 @@
 
 **必需的环境变量:**
 ```
+# 数据库
 MONGODB_URI=mongodb+srv://...
+
+# 启用 Yarn 4 支持（必需）
+ENABLE_EXPERIMENTAL_COREPACK=1
 ```
 
 **可选的环境变量:**
@@ -117,17 +121,39 @@ Turborepo 会自动处理：
 
 ## 常见问题
 
-### Q1: Module not found: Can't resolve '@wonderland/database'
+### Q1: Couldn't find package "@wonderland/database@workspace:*" on the "npm" registry
+
+**错误信息:**
+```
+Error: Couldn't find package "@wonderland/database@workspace:*" required by "@wonderland/web@0.1.0" on the "npm" registry.
+```
+
+**原因:** Vercel 默认使用 Yarn 1，不支持 Yarn 4 的 `workspace:*` 协议
+
+**解决:**
+1. 在 Vercel Dashboard → Settings → Environment Variables 添加:
+   ```
+   ENABLE_EXPERIMENTAL_COREPACK=1
+   ```
+2. 确保项目根目录 `package.json` 中有:
+   ```json
+   {
+     "packageManager": "yarn@4.2.2"
+   }
+   ```
+3. 重新部署
+
+### Q2: Module not found: Can't resolve '@wonderland/database'
 
 **原因:** packages 没有被构建
 
 **解决:** 确保 Build Command 使用 `turbo run build`，它会自动构建依赖的 packages
 
-### Q2: yarn install 很慢
+### Q3: yarn install 很慢
 
 **优化:** 在 Vercel 中启用 "Dependency Caching"
 
-### Q3: 构建超时
+### Q4: 构建超时
 
 **原因:** Monorepo 首次构建可能较慢
 
@@ -135,7 +161,7 @@ Turborepo 会自动处理：
 - 确保 `turbo.json` 中配置了缓存
 - Vercel 会缓存后续构建
 
-### Q4: 环境变量不生效
+### Q5: 环境变量不生效
 
 **检查:**
 1. 环境变量是否在 Vercel Dashboard 中配置
@@ -217,4 +243,10 @@ Build Command: cd ../.. && yarn turbo run build --filter=@wonderland/web
 Output Directory: .next
 ```
 
-**环境变量模板:** 见 `.env.example`
+**必需环境变量:**
+```
+ENABLE_EXPERIMENTAL_COREPACK=1  # 启用 Yarn 4 支持
+MONGODB_URI=mongodb+srv://...    # MongoDB 连接字符串
+```
+
+**环境变量完整模板:** 见 `apps/web/.env.production`
