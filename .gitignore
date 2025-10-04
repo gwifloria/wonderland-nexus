@@ -9,6 +9,9 @@ node_modules
 !.yarn/sdks
 !.yarn/versions
 
+# Yarn releases - keep for Vercel
+!.yarn/releases/*.cjs
+
 # Testing
 coverage
 *.log

@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd ../.. && yarn turbo run build --filter=@wonderland/web",
-  "installCommand": "yarn install",
+  "buildCommand": "cd ../.. && corepack enable && corepack prepare yarn@4.2.2 --activate && yarn install && yarn turbo run build --filter=@wonderland/web",
+  "installCommand": "corepack enable && corepack prepare yarn@4.2.2 --activate && yarn install",
   "framework": null,
   "outputDirectory": "apps/web/.next"
 }
