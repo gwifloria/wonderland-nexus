@@ -1,0 +1,14 @@
+# Backend and unnecessary files
+apps/api
+packages/mail-sync
+
+# Build artifacts
+.turbo
+*.tsbuildinfo
+
+# Test files
+*.test.*
+*.spec.*
+
+# Development files
+.env*.local

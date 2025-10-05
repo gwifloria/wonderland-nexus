@@ -12,19 +12,23 @@
 
 **General Settings:**
 - Framework Preset: `Next.js`
-- Root Directory: `apps/web`
+- Root Directory: `.` (monorepo 根目录)
 - Node.js Version: `20.x`
 
 **Build & Development Settings:**
 
 | 设置项 | 值 |
 |--------|-----|
+| **Root Directory** | `.` (留空，使用 monorepo 根目录) |
 | **Install Command** | `yarn install` |
-| **Build Command** | `cd ../.. && yarn turbo run build --filter=@wonderland/web` |
-| **Output Directory** | `.next` (默认) |
+| **Build Command** | `yarn turbo run build --filter=@wonderland/web` |
+| **Output Directory** | `apps/web/.next` |
 | **Development Command** | `yarn dev` |
 
-> **重要**: 必须在环境变量中设置 `ENABLE_EXPERIMENTAL_COREPACK=1`，Vercel 会自动根据 `package.json` 中的 `packageManager` 字段使用 Yarn 4。
+> **重要**:
+> 1. Root Directory 应留空或设为 `.`（monorepo 根目录）
+> 2. 必须在环境变量中设置 `ENABLE_EXPERIMENTAL_COREPACK=1`，Vercel 会自动根据 `package.json` 中的 `packageManager` 字段使用 Yarn 4
+> 3. Output Directory 必须是相对于根目录的路径：`apps/web/.next`
 
 #### 2. 环境变量配置
 
@@ -161,7 +165,24 @@ Error: Couldn't find package "@wonderland/database@workspace:*" required by "@wo
 - 确保 `turbo.json` 中配置了缓存
 - Vercel 会缓存后续构建
 
-### Q5: 环境变量不生效
+### Q5: 构建失败 - TypeScript 编译没有输出
+
+**错误信息:**
+```
+WARNING  no output files found for task @wonderland/database#build
+```
+
+**原因:** TypeScript 的 `.tsbuildinfo` 缓存文件损坏或过期
+
+**解决:**
+```bash
+# 清理所有 tsbuildinfo 缓存
+find . -name "*.tsbuildinfo" -type f -delete
+# 重新构建
+yarn turbo run build --force
+```
+
+### Q6: 环境变量不生效
 
 **检查:**
 1. 环境变量是否在 Vercel Dashboard 中配置

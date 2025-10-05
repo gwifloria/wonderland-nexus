@@ -21,7 +21,7 @@ ENABLE_EXPERIMENTAL_COREPACK=1
 在 Vercel Dashboard → Settings → General:
 
 ```
-Root Directory: apps/web
+Root Directory: . (留空或填 "."，使用 monorepo 根目录)
 Framework Preset: Next.js
 Node.js Version: 20.x
 ```
@@ -30,8 +30,8 @@ Node.js Version: 20.x
 
 ```
 Install Command: yarn install
-Build Command: cd ../.. && yarn turbo run build --filter=@wonderland/web
-Output Directory: .next
+Build Command: yarn turbo run build --filter=@wonderland/web
+Output Directory: apps/web/.next
 ```
 
 #### 3. 添加其他必需的环境变量
