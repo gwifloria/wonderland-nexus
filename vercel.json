@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn turbo run build --filter=@wonderland/web",
-  "installCommand": "yarn install",
+  "installCommand": "yarn install --immutable false",
   "framework": null,
   "outputDirectory": "apps/web/.next"
 }
