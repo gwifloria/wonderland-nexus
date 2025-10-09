@@ -84,7 +84,7 @@ git push origin main
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | **Root Directory**      | `.` (留空，使用 monorepo 根目录)                                                                                                    |
 | **Install Command**     | `yarn install`                                                                                                                      |
-| **Build Command**       | `yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn build --filter=@wonderland/web` |
+| **Build Command**       | `yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn build:web` |
 | **Output Directory**    | `apps/web/.next`                                                                                                                    |
 | **Development Command** | `yarn dev`                                                                                                                          |
 
@@ -131,15 +131,15 @@ vercel --prod
 ### 为什么 Build Command 需要 cd ../..?
 
 ```bash
-cd ../.. && yarn build --filter=@wonderland/web
+cd ../.. && yarn build:web
 ```
 
 **原因:**
 
 - Vercel 会 cd 到 `apps/web` 目录
-- 但 `yarn build` (turbo) 命令需要在 **monorepo 根目录** 运行
+- 但 `yarn build:web` (turbo) 命令需要在 **monorepo 根目录** 运行
 - `cd ../..` 回到根目录
-- `--filter=@wonderland/web` 只构建前端
+- `build:web` script 使用 `--filter=@wonderland/web` 只构建前端
 
 ### 依赖构建顺序
 
@@ -262,10 +262,12 @@ node_modules
   "github": {
     "silent": true
   },
-  "buildCommand": "yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn build --filter=@wonderland/web --no-cache",
+  "buildCommand": "yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn build:web --no-cache",
   "installCommand": "yarn install"
 }
 ```
+
+Note: `build:web` is defined in root package.json as `"build:web": "turbo run build --filter=@wonderland/web"`
 
 ## 验证部署
 
@@ -303,7 +305,7 @@ node_modules
 
 ```json
 {
-  "buildCommand": "yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn build --filter=@wonderland/web",
+  "buildCommand": "yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn build:web",
   "installCommand": "yarn install",
   "outputDirectory": "apps/web/.next"
 }

@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "build:web": "turbo run build --filter=@wonderland/web",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "sync-mail": "yarn workspace @wonderland/api sync:mail",
