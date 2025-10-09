@@ -12,6 +12,24 @@
         ".next/**",
         "!.next/cache/**",
         "dist/**"
+      ],
+      "env": [
+        "MONGODB_URI",
+        "GITHUB_ID",
+        "GITHUB_SECRET",
+        "NEXTAUTH_SECRET",
+        "NEXTAUTH_URL",
+        "CLOUDINARY_CLOUD_NAME",
+        "CLOUDINARY_API_KEY",
+        "CLOUDINARY_API_SECRET",
+        "SENTRY_DSN",
+        "GITHUB_TOKEN",
+        "GITHUB_OWNER",
+        "ANALYZE",
+        "NODE_ENV",
+        "VERCEL",
+        "VERCEL_ENV",
+        "NEXT_PUBLIC_*"
       ]
     },
     "dev": {

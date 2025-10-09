@@ -134,6 +134,46 @@ vercel --prod
 
 ## Turborepo + Vercel 关键配置说明
 
+### 环境变量配置 (重要!)
+
+**Turborepo 2.0+ 环境变量传递机制**：
+
+Vercel Dashboard 设置的环境变量需要在 `turbo.json` 中显式声明才能被构建任务访问：
+
+```json
+{
+  "tasks": {
+    "build": {
+      "env": [
+        "MONGODB_URI",
+        "GITHUB_ID",
+        "GITHUB_SECRET",
+        "NEXTAUTH_SECRET",
+        "NEXT_PUBLIC_*"  // 通配符匹配所有公开变量
+      ]
+    }
+  }
+}
+```
+
+**⚠️ 如果不声明**：
+- Vercel 虽然注入了环境变量到构建环境
+- 但 Turborepo 不会将它们传递给各个任务
+- 导致 `next.config.mjs` 验证失败：`Missing required environment variables`
+
+**✅ 声明后的流程**：
+```
+Vercel Dashboard 环境变量
+    ↓
+注入到构建环境 (process.env)
+    ↓
+turbo.json 中声明 (env 字段)
+    ↓
+Turborepo 传递给 build 任务
+    ↓
+next.config.mjs 验证通过 ✅
+```
+
 ### 为什么 Build Command 需要 cd ../..?
 
 ```bash
