@@ -84,7 +84,7 @@ git push origin main
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | **Root Directory**      | `.` (留空，使用 monorepo 根目录)                                                                                                    |
 | **Install Command**     | `yarn install`                                                                                                                      |
-| **Build Command**       | `yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn turbo run build --filter=@wonderland/web` |
+| **Build Command**       | `yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn build --filter=@wonderland/web` |
 | **Output Directory**    | `apps/web/.next`                                                                                                                    |
 | **Development Command** | `yarn dev`                                                                                                                          |
 
@@ -131,13 +131,13 @@ vercel --prod
 ### 为什么 Build Command 需要 cd ../..?
 
 ```bash
-cd ../.. && yarn turbo run build --filter=@wonderland/web
+cd ../.. && yarn build --filter=@wonderland/web
 ```
 
 **原因:**
 
 - Vercel 会 cd 到 `apps/web` 目录
-- 但 `turbo` 命令需要在 **monorepo 根目录** 运行
+- 但 `yarn build` (turbo) 命令需要在 **monorepo 根目录** 运行
 - `cd ../..` 回到根目录
 - `--filter=@wonderland/web` 只构建前端
 
@@ -184,7 +184,7 @@ NEXTAUTH_SECRET=$(openssl rand -base64 32)  # 生成随机密钥
 
 **原因:** packages 没有被构建
 
-**解决:** 确保 Build Command 使用 `turbo run build`，它会自动构建依赖的 packages
+**解决:** 确保 Build Command 使用 `yarn build`，Turborepo 会自动构建依赖的 packages
 
 ### Q3: yarn install 很慢
 
@@ -262,8 +262,8 @@ node_modules
   "github": {
     "silent": true
   },
-  "buildCommand": "yarn run turbo run build --filter=@wonderland/web --no-cache",
-  "installCommand": "yarn install --frozen-lockfile"
+  "buildCommand": "yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn build --filter=@wonderland/web --no-cache",
+  "installCommand": "yarn install"
 }
 ```
 
@@ -303,7 +303,7 @@ node_modules
 
 ```json
 {
-  "buildCommand": "yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn run turbo run build --filter=@wonderland/web",
+  "buildCommand": "yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn build --filter=@wonderland/web",
   "installCommand": "yarn install",
   "outputDirectory": "apps/web/.next"
 }
