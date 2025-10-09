@@ -157,9 +157,19 @@ yarn clean
 4. 简化的依赖管理
 5. 统一的开发和构建流程
 
+## 部署
+
+### Vercel 部署（推荐）
+
+查看完整的部署指南：[DEPLOYMENT.md](./DEPLOYMENT.md)
+
+**快速部署步骤：**
+1. 设置环境变量（MONGODB_URI, GITHUB_ID, GITHUB_SECRET, NEXTAUTH_SECRET）
+2. 运行 `vercel --prod --yes`
+
 ## 技术栈
 
-- **包管理器**: Yarn 4.2.2 (Workspaces)
+- **包管理器**: Yarn 4.10.3 (Workspaces)
 - **构建工具**: Turborepo
 - **前端**: Next.js 15, React 19, TypeScript
 - **后端**: Express.js, Node.js

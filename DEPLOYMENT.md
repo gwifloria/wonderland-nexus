@@ -1,12 +1,70 @@
 # Vercel 部署指南
 
-## 部署前端 (apps/web) 到 Vercel
+## 🚀 快速开始
 
-### 方式一：使用 vercel.json（推荐）
+### 前置条件
 
-项目根目录已配置 `vercel.json`，直接部署即可。
+确保你已经：
+1. ✅ 推送代码到 GitHub
+2. ✅ 有 Vercel 账号并连接到 GitHub
+3. ✅ 项目已包含 `vercel.json` 配置文件
 
-### 方式二：手动配置
+### 一键部署（推荐）
+
+项目已配置 `vercel.json`，按以下步骤快速部署：
+
+#### 1. 设置必需的环境变量
+
+在 **Vercel Dashboard → Settings → Environment Variables** 添加：
+
+**必需：**
+```bash
+# 数据库连接
+MONGODB_URI=mongodb+srv://your-connection-string
+
+# NextAuth 认证（必需）
+GITHUB_ID=your_github_oauth_app_client_id
+GITHUB_SECRET=your_github_oauth_app_client_secret
+NEXTAUTH_SECRET=your_nextauth_secret  # 使用 openssl rand -base64 32 生成
+```
+
+**可选：**
+```bash
+# Cloudinary 图片上传
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# Sentry 错误监控
+SENTRY_DSN=your_sentry_dsn
+
+# Mapbox 地图功能
+NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token
+```
+
+#### 2. 通过 CLI 部署
+
+```bash
+# 安装 Vercel CLI（如果未安装）
+npm i -g vercel
+
+# 登录
+vercel login
+
+# 部署到生产环境
+vercel --prod --yes
+```
+
+#### 3. 或通过 Git 自动部署
+
+推送到 main 分支会自动触发部署：
+```bash
+git push origin main
+```
+
+---
+
+## 手动配置（如果需要）
 
 #### 1. Vercel 项目设置
 
@@ -21,51 +79,16 @@
 |--------|-----|
 | **Root Directory** | `.` (留空，使用 monorepo 根目录) |
 | **Install Command** | `yarn install` |
-| **Build Command** | `yarn turbo run build --filter=@wonderland/web` |
+| **Build Command** | `yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn turbo run build --filter=@wonderland/web` |
 | **Output Directory** | `apps/web/.next` |
 | **Development Command** | `yarn dev` |
 
-> **重要**:
-> 1. Root Directory 应留空或设为 `.`（monorepo 根目录）
-> 2. 必须在环境变量中设置 `ENABLE_EXPERIMENTAL_COREPACK=1`，Vercel 会自动根据 `package.json` 中的 `packageManager` 字段使用 Yarn 4
-> 3. Output Directory 必须是相对于根目录的路径：`apps/web/.next`
+> **重要提示**:
+> - Root Directory 保持为 `.`（monorepo 根目录）
+> - Build Command 会先构建依赖的 workspace 包，再构建 web 应用
+> - 项目已捆绑 Yarn 4 二进制文件（`.yarn/releases/`），无需额外配置
 
-#### 2. 环境变量配置
-
-在 Vercel Dashboard → Settings → Environment Variables 添加：
-
-**必需的环境变量:**
-```
-# 数据库
-MONGODB_URI=mongodb+srv://...
-
-# 启用 Yarn 4 支持（必需）
-ENABLE_EXPERIMENTAL_COREPACK=1
-```
-
-**可选的环境变量:**
-```
-# NextAuth
-NEXTAUTH_URL=https://your-domain.vercel.app
-NEXTAUTH_SECRET=your-secret-key
-
-# GitHub (用于博客和图库同步)
-GITHUB_TOKEN=ghp_...
-GITHUB_OWNER=your-username
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-
-# Sentry (如果需要)
-SENTRY_DSN=...
-
-# Mapbox (如果需要地图功能)
-NEXT_PUBLIC_MAPBOX_TOKEN=...
-```
-
-#### 3. 部署步骤
+#### 2. 部署步骤
 
 **通过 Git 自动部署:**
 ```bash
@@ -125,27 +148,25 @@ Turborepo 会自动处理：
 
 ## 常见问题
 
-### Q1: Couldn't find package "@wonderland/database@workspace:*" on the "npm" registry
+### Q1: Missing required environment variables
 
 **错误信息:**
 ```
-Error: Couldn't find package "@wonderland/database@workspace:*" required by "@wonderland/web@0.1.0" on the "npm" registry.
+❌ Missing required environment variables for authentication:
+   - GITHUB_ID
+   - GITHUB_SECRET
+   - NEXTAUTH_SECRET
 ```
 
-**原因:** Vercel 默认使用 Yarn 1，不支持 Yarn 4 的 `workspace:*` 协议
+**原因:** NextAuth 认证需要这些环境变量
 
 **解决:**
-1. 在 Vercel Dashboard → Settings → Environment Variables 添加:
-   ```
-   ENABLE_EXPERIMENTAL_COREPACK=1
-   ```
-2. 确保项目根目录 `package.json` 中有:
-   ```json
-   {
-     "packageManager": "yarn@4.2.2"
-   }
-   ```
-3. 重新部署
+在 Vercel Dashboard → Settings → Environment Variables 添加：
+```bash
+GITHUB_ID=your_github_oauth_app_client_id
+GITHUB_SECRET=your_github_oauth_app_client_secret
+NEXTAUTH_SECRET=$(openssl rand -base64 32)  # 生成随机密钥
+```
 
 ### Q2: Module not found: Can't resolve '@wonderland/database'
 
@@ -256,18 +277,24 @@ node_modules
 
 ## 快速参考
 
-**一键部署配置:**
-```
-Root Directory: apps/web
-Install Command: yarn install
-Build Command: cd ../.. && yarn turbo run build --filter=@wonderland/web
-Output Directory: .next
+**Vercel 项目配置（使用 vercel.json）:**
+```json
+{
+  "buildCommand": "yarn workspaces foreach -Apt --include '@wonderland/{database,shared}' run build && yarn turbo run build --filter=@wonderland/web",
+  "installCommand": "yarn install",
+  "outputDirectory": "apps/web/.next"
+}
 ```
 
 **必需环境变量:**
-```
-ENABLE_EXPERIMENTAL_COREPACK=1  # 启用 Yarn 4 支持
-MONGODB_URI=mongodb+srv://...    # MongoDB 连接字符串
+```bash
+MONGODB_URI=mongodb+srv://...           # MongoDB 连接
+GITHUB_ID=your_client_id                # GitHub OAuth
+GITHUB_SECRET=your_client_secret        # GitHub OAuth Secret
+NEXTAUTH_SECRET=your_generated_secret   # NextAuth 密钥
 ```
 
-**环境变量完整模板:** 见 `apps/web/.env.production`
+**CLI 部署命令:**
+```bash
+vercel --prod --yes
+```
