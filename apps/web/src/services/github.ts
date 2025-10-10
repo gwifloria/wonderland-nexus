@@ -18,8 +18,10 @@ export class GitHubService {
       branch: process.env.GITHUB_BRANCH || "main",
       token: process.env.GITHUB_TOKEN || "",
     };
+  }
 
-    if (!process.env.GITHUB_TOKEN) {
+  private ensureToken(): void {
+    if (!this.config.token) {
       throw new Error("GitHub token is required");
     }
   }
@@ -53,6 +55,7 @@ export class GitHubService {
    * 获取指定分类下的所有文件
    */
   async listFiles(category: string): Promise<GitHubFile[]> {
+    this.ensureToken();
     const safePath = category.split("/").map(encodeURIComponent).join("/");
     const url = `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${safePath}?ref=${encodeURIComponent(this.config.branch)}`;
 
@@ -68,6 +71,7 @@ export class GitHubService {
    * 获取文件原始内容
    */
   async getFileContent(path: string): Promise<BlogContent> {
+    this.ensureToken();
     const safePath = path.split("/").map(encodeURIComponent).join("/");
     const url = `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${safePath}?ref=${encodeURIComponent(this.config.branch)}`;
 
@@ -99,6 +103,7 @@ export class GitHubService {
    * 获取文件的最新提交信息
    */
   async getCommitInfo(path: string): Promise<CommitMeta> {
+    this.ensureToken();
     const safePath = path.split("/").map(encodeURIComponent).join("/");
     const url = `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/commits?path=${safePath}&per_page=1&sha=${encodeURIComponent(this.config.branch)}`;
 
@@ -127,6 +132,7 @@ export class GitHubService {
   async getFileContentBase64(
     path: string,
   ): Promise<{ content: string; encoding: string }> {
+    this.ensureToken();
     const safePath = path.split("/").map(encodeURIComponent).join("/");
     const url = `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${safePath}?ref=${encodeURIComponent(this.config.branch)}`;
 
