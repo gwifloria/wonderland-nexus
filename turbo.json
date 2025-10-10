@@ -15,6 +15,7 @@
       ],
       "env": [
         "MONGODB_URI",
+        "MONGODB_PASSWORD",
         "GITHUB_ID",
         "GITHUB_SECRET",
         "NEXTAUTH_SECRET",
