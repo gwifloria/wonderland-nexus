@@ -25,8 +25,6 @@ export class WhisperParser {
       const memoBlocks = this.extractMemoBlocks(htmlContent);
       result.totalEntries = memoBlocks.length;
 
-      console.log(`Found ${memoBlocks.length} memo entries`);
-
       for (let i = 0; i < memoBlocks.length; i++) {
         try {
           const memoHtml = memoBlocks[i];

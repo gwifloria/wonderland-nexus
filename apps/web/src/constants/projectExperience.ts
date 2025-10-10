@@ -1,4 +1,4 @@
-import { ProjectExperienceProps, WorkHistoryProps } from "../types";
+import { ProjectExperience, WorkHistory } from "../types/contact";
 import auto1 from "/public/images/auto1.png";
 import auto2 from "/public/images/auto2.png";
 import auto3 from "/public/images/auto3.png";
@@ -7,7 +7,7 @@ import cloud1 from "/public/images/cloud1.png";
 import cloud2 from "/public/images/cloud2.png";
 import cloud3 from "/public/images/cloud3.png";
 
-export const workHistoryList: WorkHistoryProps[] = [
+export const workHistoryList: WorkHistory[] = [
   {
     companyName:
       "SenseTime Technology - Front-End Engineering Cloud Computing Platform Group",
@@ -30,7 +30,7 @@ export const workHistoryList: WorkHistoryProps[] = [
   },
 ];
 
-export const projectExperienceList: ProjectExperienceProps[] = [
+export const projectExperienceList: ProjectExperience[] = [
   {
     projectName: "Autonomous Driving Operation Platform",
     projectBackground:

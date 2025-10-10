@@ -1,4 +1,4 @@
-import { GitItem, MapDestinationMarker } from "@/types";
+import { GitHubFile, MapDestinationMarker } from "@/types";
 import mapboxgl, { Marker } from "mapbox-gl";
 import { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ export const useMapMarker = (
 ) => {
   const [markers, setMarkers] = useState<Marker[]>();
 
-  const getImageDom = (image: GitItem) => {
+  const getImageDom = (image: GitHubFile) => {
     const div = document.createElement("div");
     div.className = "rounded-full border-2 border-inherit	border-solid";
     const img = document.createElement("img");
