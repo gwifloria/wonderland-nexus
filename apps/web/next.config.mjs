@@ -3,7 +3,7 @@ import bundleAnalyzer from "@next/bundle-analyzer";
 
 // Validate required environment variables for authentication
 function validateRequiredEnvVars() {
-  const requiredVars = ["GITHUB_ID", "GITHUB_SECRET", "NEXTAUTH_SECRET"];
+  const requiredVars = ["GITHUB_ID", "GITHUB_SECRET", "NEXTAUTH_SECRET", "GITHUB_TOKEN"];
   const missingVars = requiredVars.filter((varName) => !process.env[varName]);
 
   if (missingVars.length > 0) {
@@ -23,6 +23,12 @@ function validateRequiredEnvVars() {
     if (missingVars.includes("NEXTAUTH_SECRET")) {
       console.error("\n🔐 For NEXTAUTH_SECRET, generate a random string:");
       console.error("   openssl rand -base64 32");
+    }
+
+    if (missingVars.includes("GITHUB_TOKEN")) {
+      console.error("\n🔑 For GITHUB_TOKEN, create a Personal Access Token:");
+      console.error("   https://github.com/settings/tokens");
+      console.error("   Required scopes: repo (for private repos) or public_repo");
     }
 
     console.error(
